@@ -10,14 +10,24 @@ namespace Task_With_Parameters
     {
         static  string func(object s)
         {
-            Console.WriteLine(s.ToString());
-            return s.ToString();
+            try
+            {
+                Console.WriteLine(s.ToString());    
+                return s.ToString();
+
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+            
         }
             static void Main(string[] args)
         {
             int i = 0;i++;
             List<Task<string>> taskList = new List<Task<string>>();
-            for (int j = 0; j < 1000; j++)
+            for (int j = 0; j < 10; j++)
             {
                 taskList.Add(Task.Factory.StartNew(func, j, TaskCreationOptions.LongRunning));
                 
