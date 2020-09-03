@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="AbBalance.cs" />
     <Compile Include="AbBalanceSP.cs" />
+    <Compile Include="CdBalanceSP.cs" />
+    <Compile Include="IBalance.cs" />
     <Compile Include="MitsubishiPLC.cs" />
     <Compile Include="MyException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

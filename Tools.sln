@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_With_Parameters", "Tas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverClassesLib", "DriverClassesLib\DriverClassesLib.csproj", "{DB199337-7A3E-4114-9CA6-51FECA743EA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ab型天平测试_实验台_手动开机计算", "Ab型天平测试_实验台_手动开机计算\Ab型天平测试_实验台_手动开机计算.csproj", "{39732202-FD1A-4FF4-BBF1-2E5C69EBDF49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "天平测试_实验台_手动开机计算", "Ab型天平测试_实验台_手动开机计算\天平测试_实验台_手动开机计算.csproj", "{39732202-FD1A-4FF4-BBF1-2E5C69EBDF49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -216,7 +216,6 @@ namespace DriverClassesLib
                 _serialPort.Close();
                 if (receiveBuffer[0] != 0x06)
                 {
-
                     throw new MyException((int)AlarmCode.messageError, MitsubishAlarmMessage(AlarmCode.messageError));
                 }
             }

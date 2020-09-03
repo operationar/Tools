@@ -1,51 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO.Ports;
+using System.Linq;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace DriverClassesLib
 {
-    public class AbBalanceSP:IBalanceSP
+    public class CdBalanceSP : IBalanceSP
     {
         private readonly SerialPort sp;
-        
         private readonly ManualResetEvent dataRecevieEvent = new ManualResetEvent(false);
-        public AbBalanceSP(SerialPort _sp)
+        public CdBalanceSP(SerialPort _sp)
         {
             this.sp = _sp;
             sp.DataReceived += Sp_DataReceived;
         }
-        public AbBalanceSP(string _com)
-        {
-            this.sp = new SerialPort(_com, 19200, Parity.None, 8, StopBits.One);
-            sp.DataReceived += Sp_DataReceived;
-        }
+
         private void Sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            Thread.Sleep(5);
+            Thread.Sleep(1);
             dataRecevieEvent.Set();
+        }
+
+        public CdBalanceSP(string _com)
+        {
+            this.sp = new SerialPort(_com, 9600, Parity.Even, 8, StopBits.One);
+            sp.DataReceived += Sp_DataReceived;
+        }
+        public bool Init(out string msg)
+        {
+            msg = "";
+            //byte data;
+            try
+            {
+
+                byte[] sendBuffer1 = Encoding.Default.GetBytes(";COF3;");
+                dataRecevieEvent.Reset();
+                if (!sp.IsOpen) sp.Open();
+                sp.Write(sendBuffer1, 0, sendBuffer1.Length);
+                if (!dataRecevieEvent.WaitOne(1000)) return false;
+                byte[] receiveBuffer1 = new byte[sp.BytesToRead];
+                sp.Read(receiveBuffer1, 0, receiveBuffer1.Length);
+                if (receiveBuffer1[0] != '0') { msg = receiveBuffer1[0].ToString("X2"); return false; }
+
+                byte[] sendBuffer2 = new byte[] { 0x3B, 0x44, 0x50, 0x57, 0x22, 0x41, 0x44, 0x43, 0x22, 0x3B };
+                dataRecevieEvent.Reset();
+                if (!sp.IsOpen) sp.Open();
+                sp.Write(sendBuffer1, 0, sendBuffer1.Length);
+                if (!dataRecevieEvent.WaitOne(1000)) return false;
+                byte[] receiveBuffer2 = new byte[sp.BytesToRead];
+                sp.Read(receiveBuffer1, 0, receiveBuffer1.Length);
+                if (receiveBuffer1[0] != '0') { msg = receiveBuffer1[0].ToString("X2"); return false; }
+
+                byte[] sendBuffer3 = new byte[] { 0x3B, 0x53, 0x50, 0x57, 0x22, 0x41, 0x44, 0x43, 0x22, 0x3B };
+                dataRecevieEvent.Reset();
+                if (!sp.IsOpen) sp.Open();
+                sp.Write(sendBuffer1, 0, sendBuffer1.Length);
+                if (!dataRecevieEvent.WaitOne(1000)) return false;
+                byte[] receiveBuffer3 = new byte[sp.BytesToRead];
+                sp.Read(receiveBuffer1, 0, receiveBuffer1.Length);
+                if (receiveBuffer1[0] != '0') { msg = receiveBuffer1[0].ToString("X2"); return false; }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                return false;
+            }
         }
         public bool AcquireWeight(out double data)
         {
             data = 0; ;
             try
             {
-                byte[] sendBuffer = new byte[] { 0XA3, 0X03, 0X7C, 0X41, 0X63 };
+                byte[] sendBuffer = new byte[] { 0x3B, 0x6D, 0x73, 0x76, 0x3F, 0x3B };
                 dataRecevieEvent.Reset();
                 if (!sp.IsOpen) sp.Open();
                 sp.Write(sendBuffer, 0, sendBuffer.Length);
                 if (!dataRecevieEvent.WaitOne(1000)) return false;
                 byte[] receiveBuffer = new byte[sp.BytesToRead];
                 sp.Read(receiveBuffer, 0, receiveBuffer.Length);
-               // foreach (var item in receiveBuffer)
-               // {
-                   // Console.Write(item.ToString("X2") + ' ');
-               // }
-               // Console.WriteLine();
-                data = ParseData(receiveBuffer)/10.0;
+                data = int.Parse(Encoding.ASCII.GetString(receiveBuffer, 0, receiveBuffer.Length)) / 10.0;
                 return data != int.MaxValue;
             }
             catch (Exception ex)
@@ -58,15 +97,15 @@ namespace DriverClassesLib
             data = 0;
             try
             {
-                byte[] sendBuffer = new byte[] { 0XA3, 0X12, 0X6D, 0X41, 0X63 };
+                byte[] sendBuffer = new byte[] { 0x3B, 0x74, 0x61, 0x72, 0x3B };
                 dataRecevieEvent.Reset();
                 if (!sp.IsOpen) sp.Open();
                 sp.Write(sendBuffer, 0, sendBuffer.Length);
                 if (!dataRecevieEvent.WaitOne(1000)) return false;
                 byte[] receiveBuffer = new byte[sp.BytesToRead];
                 sp.Read(receiveBuffer, 0, receiveBuffer.Length);
-                data = receiveBuffer[3];
-                return data == 0x00;
+                data = receiveBuffer[0];
+                return data == '0';
             }
             catch (Exception ex)
             {
@@ -76,17 +115,17 @@ namespace DriverClassesLib
         public bool StartCal(out int data)
         {
             data = 0;
-            try
+           try
             {
-                byte[] sendBuffer = new byte[] { 0XA3, 0X02, 0X7D, 0X41, 0X63 };
+                /* byte[] sendBuffer = new byte[] { 0XA3, 0X02, 0X7D, 0X41, 0X63 };
                 dataRecevieEvent.Reset();
                 if (!sp.IsOpen) sp.Open();
                 sp.Write(sendBuffer, 0, sendBuffer.Length);
                 if (!dataRecevieEvent.WaitOne(1000)) return false;
                 byte[] receiveBuffer = new byte[sp.BytesToRead];
                 sp.Read(receiveBuffer, 0, receiveBuffer.Length);
-                data = receiveBuffer[1];
-                return data == 0x42;
+                data = receiveBuffer[1];*/
+                return data == 0;
             }
             catch (Exception ex)
             {
@@ -98,15 +137,15 @@ namespace DriverClassesLib
             data = 0;
             try
             {
-                byte[] sendBuffer = new byte[] { 0XA3, 0X29, 0X56, 0X41, 0X63 };
+                byte[] sendBuffer = new byte[] { 0x3B, 0x6C, 0x64, 0x77, 0x3B };
                 dataRecevieEvent.Reset();
                 if (!sp.IsOpen) sp.Open();
                 sp.Write(sendBuffer, 0, sendBuffer.Length);
                 if (!dataRecevieEvent.WaitOne(1000)) return false;
                 byte[] receiveBuffer = new byte[sp.BytesToRead];
                 sp.Read(receiveBuffer, 0, receiveBuffer.Length);
-                data = receiveBuffer[3];
-                return data == 0x00;
+                data = receiveBuffer[0];
+                return data == '0';
             }
             catch (Exception ex)
             {
@@ -118,7 +157,7 @@ namespace DriverClassesLib
             data = 0;
             try
             {
-                byte[] sendBuffer = new byte[] { 0XA3, 0X28, 0X57, 0X41, 0X63 };
+                byte[] sendBuffer = new byte[] { 0x3B, 0x6C, 0x77, 0x74, 0x3B };
                 dataRecevieEvent.Reset();
                 if (!sp.IsOpen) sp.Open();
                 sp.Write(sendBuffer, 0, sendBuffer.Length);
@@ -126,49 +165,13 @@ namespace DriverClassesLib
                 byte[] receiveBuffer = new byte[sp.BytesToRead];
                 sp.Read(receiveBuffer, 0, receiveBuffer.Length);
                 data = receiveBuffer[3];
-                return data == 0x00;
+                return data == '0';
             }
             catch (Exception ex)
             {
                 return false;
             }
         }
-        private int ParseData(byte[] recvBytes)
-        {
-            byte[] result = new byte[8];
-            int offset = 0;
-            try
-            {
-                for (int i = 0; i < recvBytes.Length; i++)
-                {
-                    result[offset] = recvBytes[i];
-                    if (recvBytes[i] == 0xA0)
-                    {
-                        if (recvBytes[i + 1] == 0x00 || recvBytes[i + 1] == 0x03 || recvBytes[i + 1] == 0x06 || recvBytes[i + 1] == 0x09)
-                        {
-                            result[offset] = (byte)(recvBytes[i] + recvBytes[i + 1]);
-                            i++;
-                        }
-                    }
-                    offset++;
-                    if (offset >= result.Length) break;
 
-                }
-                StringBuilder sb = new StringBuilder();
-                sb.Append(result[4].ToString("X2"));
-                sb.Append(result[5].ToString("X2"));
-                sb.Append(result[6].ToString("X2"));
-                int data = int.Parse(sb.ToString(), System.Globalization.NumberStyles.HexNumber);
-                if ((result[3] & 0x08) == 8)
-                {
-                    return 0 - data;
-                }
-                return data;
-            }
-            catch (Exception ex)
-            {
-                return int.MaxValue;
-            }
-        }
     }
 }
