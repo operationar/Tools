@@ -105,11 +105,14 @@ namespace Ab型天平测试_实验台_手动开机计算
         }
 
         private void inspectStart()
+
         {
+            int delayTime = 50;
+            mitsubishiPLC.ForceDevice("M100", true, out String msg);
             while (!isEnd)
             {
-                mitsubishiPLC.ForceDevice("M100", true, out String msg);
-                Thread.Sleep(200);
+                
+                /*Thread.Sleep(200);
                 bool result;
                 if (isNeedCal)
                 {
@@ -118,10 +121,11 @@ namespace Ab型天平测试_实验台_手动开机计算
                     { 
                         WriteDataToList("error start " + calData.ToString("X2"));
                     }
-                }
-                Thread.Sleep(int.Parse(acquireDelay.Text));
-                
-                result = newBalance.AcquireWeight(out double data);
+                }*/
+                Thread.Sleep(int.Parse(acquireDelay.Text)- delayTime);
+                mitsubishiPLC.ForceDevice("M100", true, out   msg);
+                Thread.Sleep(delayTime);
+                bool result = newBalance.AcquireWeight(out double data);
                 if (result)
                 {
                     WriteDataToList(data.ToString());
@@ -130,7 +134,7 @@ namespace Ab型天平测试_实验台_手动开机计算
                 {
                     WriteDataToList("error");
                 }
-                Thread.Sleep(1);
+                //Thread.Sleep(1);
             }
         }
 

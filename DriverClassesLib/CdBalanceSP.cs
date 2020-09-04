@@ -36,7 +36,6 @@ namespace DriverClassesLib
             //byte data;
             try
             {
-
                 byte[] sendBuffer1 = Encoding.Default.GetBytes(";COF3;");
                 dataRecevieEvent.Reset();
                 if (!sp.IsOpen) sp.Open();
