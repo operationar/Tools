@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverClassesLib", "DriverC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "天平测试_实验台_手动开机计算", "Ab型天平测试_实验台_手动开机计算\天平测试_实验台_手动开机计算.csproj", "{39732202-FD1A-4FF4-BBF1-2E5C69EBDF49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBinding", "DataBinding\DataBinding.csproj", "{EFD22409-9C5B-4A68-9E5C-F05D61EF3D04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BindingSourceExamples", "bindindSourceDemo\BindingSourceExamples.csproj", "{B2D5209B-93B5-4271-B366-88A95D65F2F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{39732202-FD1A-4FF4-BBF1-2E5C69EBDF49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39732202-FD1A-4FF4-BBF1-2E5C69EBDF49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39732202-FD1A-4FF4-BBF1-2E5C69EBDF49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFD22409-9C5B-4A68-9E5C-F05D61EF3D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFD22409-9C5B-4A68-9E5C-F05D61EF3D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFD22409-9C5B-4A68-9E5C-F05D61EF3D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFD22409-9C5B-4A68-9E5C-F05D61EF3D04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D5209B-93B5-4271-B366-88A95D65F2F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D5209B-93B5-4271-B366-88A95D65F2F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D5209B-93B5-4271-B366-88A95D65F2F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D5209B-93B5-4271-B366-88A95D65F2F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
